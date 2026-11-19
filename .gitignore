@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+# Bancos de dados e planilhas de coleta
+*.db
+*.xlsx
+# Pacote e WSGI de deploy (contém SECRET_KEY real)
+deploy/*.zip
+deploy/pythonanywhere_wsgi.py

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Mapa de oportunidades em {{map_city}}{% endblock %}
+{% block head %}<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">{% endblock %}
+{% block content %}
+<section class="wrap section">
+  <div class="overline">DESCOBERTA TERRITORIAL</div>
+  <h1 class="page-title">Mapa das oportunidades em {{map_city}}</h1>
+  <p class="page-intro">Veja onde estão as oportunidades de formação em {{map_city}}. Os marcadores mostram as unidades com endereço verificado; a lista abaixo traz todos os cursos publicados da cidade.</p>
+  <form action="{{url_for('map_page')}}" class="map-filters" method="get">
+    <label>Área<select name="area"><option value="">Todas</option>{% for v in filters.area %}<option {% if fs.area==v %}selected{% endif %}>{{v}}</option>{% endfor %}</select></label>
+    <label>Modalidade<select name="modality"><option value="">Todas</option>{% for v in filters.modality %}<option {% if fs.modality==v %}selected{% endif %}>{{v}}</option>{% endfor %}</select></label>
+    <button class="btn" type="submit">Atualizar mapa</button><a class="reset-link" href="{{url_for('map_page')}}">Limpar filtros</a>
+  </form>
+  <div id="map" class="real-map" role="region" aria-label="Mapa interativo de {{map_city}}" tabindex="0"></div>
+  <p id="map-message" class="muted" role="status">Carregando mapa. A listagem abaixo também permite acessar todas as oportunidades.</p>
+  <p class="muted">Malha geográfica: base derivada do IBGE, via projeto público br-geojson. Marcadores de unidades só aparecem quando possuem coordenadas verificadas.</p>
+  <h2 class="mt">Oportunidades encontradas ({{rows|length}})</h2>
+  {% if rows %}<div class="cards">{% include '_cards.html' %}</div>{% else %}<p>Nenhuma oportunidade publicada corresponde aos filtros. <a href="{{url_for('map_page')}}">Limpar filtros</a>.</p>{% endif %}
+</section>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="{{url_for('static',filename='mapa.js')}}"></script>
+<script>
+initCityMap('map',{city:{{map_city|tojson}},points:{{georows|tojson}},status:document.getElementById('map-message'),focusMarkers:['q','area','modality'].some(k=>new URLSearchParams(location.search).get(k))});
+</script>
+{% endblock %}

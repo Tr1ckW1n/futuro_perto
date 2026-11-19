@@ -1,0 +1,1 @@
+{% extends 'base.html' %}{% block title %}{{heading}}{% endblock %}{% block content %}<section class="wrap section narrow"><div class="overline">FUTURO PERTO</div><h1 class="page-title">{{heading}}</h1>{% for p in paragraphs %}<p class="info-p">{{p}}</p>{% endfor %}<a class="btn" href="{{url_for('explore')}}">Explorar oportunidades →</a></section>{% endblock %}
